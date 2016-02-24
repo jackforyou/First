@@ -1,0 +1,159 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Test</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
+	<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/css/bootstrap-slider.min.css">
+	{# Load the tag library #}
+	{% load bootstrap3 %}
+
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	<style type="text/css">
+	.black-background{
+		background-color: #E04410;
+	}
+	.black-text{
+		font-size: 18px !important;
+	}
+	.spacing{
+		padding-top: 10%;
+		padding-bottom: 10%;
+	}
+	.bottom{
+		margin-bottom: 20%;
+		z-index: 10;
+		position: relative;
+	}
+	.layer-index{
+		position: fixed;
+		z-index: 1;
+	}
+	.background{
+		background-color: #FFFFFF !important;
+		border-radius: 15px;
+		opacity: 0.95;
+	}
+	.menu-top{
+		font-size: 20px;
+	}
+	.menu-align{
+		vertical-align: middle;
+	}
+	.height-footer{
+		height: 100px;
+	}
+	#image-head{
+		position: absolute;
+		width: 100%;
+		height: 450px;
+	}
+	#image-logo{
+		width: auto;
+		height: 100px;
+	}
+	footer{
+		padding-top: 60px;
+	}
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// body...
+            $('#datetimepicker').datetimepicker();
+            $('#form-search').submit(function(event){
+            	if($('#province').val() != "")
+            	{
+            		console.log('Not good');
+            	}else{
+            		event.preventDefault();
+            	}
+            });
+		});
+		
+	</script>
+</head>
+<body>
+	<div class="container">
+		<nav class="navbar">
+			<div class="container-fluid">
+			    <div class="navbar-header menu-align">
+			    	<a class="nav-brand">
+			        	<img id="image-logo" src="{% static 'logo-cattcen.png' %}"  alt="Responsive image">   
+			        </a>
+			    </div>
+			    <ul class="nav navbar-nav nav-pills navbar-right">
+				  <li role="presentation"><a class="menu-top" href="/chinesetable_list">List Restaurants</a></li>
+				  <li role="presentation"><a class="menu-top" href="#">Make Request</a></li>
+				  <li role="presentation"><a class="menu-top" href="#">Contact Us</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<img id="image-head" src="{% static 'hot-buffet.jpg' %}" class="img-responsive" alt="Responsive image">
+	<div class="container spacing">
+		
+		  <div class="row background bottom">
+			    <form id="form-search" method="GET" action="search/" class="submit-form" role="search">
+			    {% csrf_token %}
+			        <div class="col-md-4 form-group ">
+			        	<p></p>
+			        	<label>จังหวัดที่ต้องการจัดงาน</label>
+			          	<input id="province" type="text" name="placeText" class="form-control" placeholder="Search">
+			        </div>
+			        <div class="col-md-3 form-group">
+			        	<p></p>
+			        	<label>จำนวนผู้ร่วมงาน</label>
+				        <input type="number" name="price_start" class="form-control" placeholder="">
+					</div>
+			        <div class="col-md-2 form-group">
+			        	<p></p>
+			        	<label>ราคาตั้งแต่ (ต่อ1โต๊ะ)</label>
+			          	<input type="number" name="price_start" class="form-control" placeholder="">
+			        </div>
+			        <div class="col-md-2 form-group">
+			        	<p></p>
+			        	<label>จนถึง</label>
+			          	<input type="number" name="price_end"  class="form-control" placeholder="">
+			        </div>
+			        <div class="col-md-1 form-group">
+			        	<p></p>
+			        	<label>ยืนยัน</label>
+			        	<input id="submit-request" type="submit" class="btn btn-success" value="Submit">
+			        </div>
+	      		</form>
+	  	</div>
+	  	{% if object_list %}
+	  	<div>
+	  		<div style="background-color:white; opacity:0.98">
+	  		   <div class="row">
+			{% for table in object_list %}	
+				<div class="col-md-4">
+					<h1><a href="{% url 'caterlist:chinesetable' table.id %}">{{ table.title_text }}</a></h1> 					
+					<img src="{% static table.filename %}" class="img-thumbnail">
+					<p></p><label>{{ table.description_text}}</label>
+					<label>สถานที่ให้บริการ  : {{ table.place_for_service_text}}</label>
+					<p></p><label>ตั้งอยู่ที่  : {{ table.location_text}}</label>
+				</div>
+			{% endfor %}
+			</div>
+	  		</div>
+	  	</div>
+		{% endif %}
+	</div>
+	<div class="navbar-default height-footer">
+		<div class="container">
+			<h5>Copyright Reserved Cattcen.com</h5>
+		</div>
+	</div>
+</body>
+</html>

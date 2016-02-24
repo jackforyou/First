@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Test</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/bootstrap-slider.min.js"></script>
+	<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/6.0.16/css/bootstrap-slider.min.css">
+	{# Load the tag library #}
+	{% load bootstrap3 %}
+
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	<style type="text/css">
+	.black-background{
+		background-color: #E04410;
+	}
+	.black-text{
+		font-size: 18px !important;
+	}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-default black-background">
+	  <div class="container container-fluid">
+	    <div class="navbar-header">
+	       <a href="/"><h1>CatCen</h1></a> 
+	    </div>
+	    <ul class="nav navbar-nav navbar-right">
+	    	<li class="active">
+    			<a class="black-text" href="/chinesetable_list">List Restautants</a>
+    		</li>
+    		<li class="active">
+    			<a class="black-text" href="#">Contact Us</a>
+    		</li>
+    	  </ul>
+	  </div>
+	</nav>
+	  	<div class="container">
+	  	   <h1>{{ object.title_text }}</a></h1> 
+  		   <div class="row">
+				<div class="col-md-6">										
+					<img src="{% static object.filename %}" class="img-thumbnail">
+				</div>
+				<div class="col-md-6">
+					<h2>รายละเอียด</h2>
+					<p></p><label>{{ object.description_text}}</label>
+					<label>สถานที่ให้บริการ  : {{ object.place_for_service_text}}</label>
+					<p></p><label>ตั้งอยู่ที่  : {{ object.location_text}}</label>
+					<p></p><label>ช่วงราคา : {{ object.price_start_number}} - {{object.price_end_number}}</label>
+				</div>
+			</div>
+			<p></p>
+			<p></p>
+			<h1>รายการชุดอาหาร</h1>
+			{% for menu in chinesetable.setmenu_set.all %}
+			<div class="row">
+				<h3> {{ menu.setMenu_number }} {{ menu.setMenu_name }} ราคา {{ menu.setMenu_price }} บาท</h3> 
+				<p>
+				<h3> เมนูอาหาร : {{ menu.setMenu_detail }} </h3>
+			</div>
+			{% endfor %}
+			
+	  	</div>
+</body>
